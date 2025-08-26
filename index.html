@@ -1,423 +1,315 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ko">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no" />
-<title>바나나 월드에서 살아남기 — 텍스트 어드벤처</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>바나나 월드 어드벤처 - 고퀄판</title>
 <style>
-  :root{
-    --bg:#111;
-    --panel:#141414;
-    --accent:#ffd54f;
-    --muted:#cfcfcf;
-    --glass: rgba(255,255,255,0.04);
-    --danger:#ff6b6b;
-  }
-  html,body{height:100%;margin:0;font-family:Inter, "Noto Sans KR", system-ui, -apple-system, "Apple SD Gothic Neo", "Malgun Gothic", "Segoe UI", Roboto, "Helvetica Neue", Arial; background:linear-gradient(180deg,#0f0f10 0%, #141414 100%); color: #fff; -webkit-font-smoothing:antialiased;}
-  .app{display:flex;flex-direction:column;height:100vh;padding:16px;box-sizing:border-box;}
-  header{display:flex;align-items:center;gap:12px;}
-  .logo{width:48px;height:48px;border-radius:10px;background:linear-gradient(135deg,#fff2b8,#ffd54f);display:flex;align-items:center;justify-content:center;font-weight:700;color:#222;font-size:18px;box-shadow:0 8px 30px rgba(0,0,0,0.6);}
-  h1{font-size:18px;margin:0;}
-  .meta{margin-left:auto;text-align:right;font-size:12px;color:var(--muted);}
-  main{flex:1;display:flex;flex-direction:column;gap:12px;margin-top:10px;}
-  .panel{background:var(--panel);border-radius:14px;padding:14px;box-shadow:0 8px 30px rgba(0,0,0,0.6);backdrop-filter:blur(4px);}
-  #story{flex:1;min-height:220px; font-size:16px; line-height:1.6; white-space:pre-wrap; opacity:1; transition:opacity .28s ease;}
-  #meme{width:100%;border-radius:10px;margin-top:10px;display:none;max-height:220px;object-fit:cover;}
-  #choices{display:flex;flex-direction:column;gap:10px;margin-top:8px;}
-  .choice{
-    padding:14px;border-radius:12px;background:linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
-    border:1px solid rgba(255,255,255,0.04); font-size:16px; text-align:left; cursor:pointer; box-shadow:0 6px 18px rgba(0,0,0,0.45);
+  @import url('https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700&display=swap');
+  body {
+    margin: 0;
+    font-family: 'Nanum Gothic', sans-serif;
+    background: linear-gradient(to bottom, #1b1b1b, #111);
     color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
   }
-  .choice:active{transform:translateY(2px);}
-  .choice.small{padding:10px;font-size:14px;}
-  .row{display:flex;gap:8px;align-items:center;}
-  .stat{font-size:13px;color:var(--muted);padding:8px 10px;border-radius:999px;background:var(--glass);border:1px solid rgba(255,255,255,0.03);}
-  footer{display:flex;gap:8px;align-items:center;justify-content:space-between;margin-top:12px;}
-  .btn{padding:10px 12px;border-radius:10px;background:var(--accent);color:#222;font-weight:700;border:none;cursor:pointer;box-shadow:0 8px 18px rgba(255,213,79,0.12);}
-  .btn.ghost{background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--muted);}
-  .smalltext{font-size:12px;color:var(--muted);}
-  .log{max-height:140px;overflow:auto;padding:8px;border-radius:10px;background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent);font-size:13px;color:var(--muted); margin-top:8px;}
-  .center{display:flex;justify-content:center;align-items:center;}
-  .hidden{display:none;}
-  @keyframes shake {
-    0%{transform:translateX(0)}
-    25%{transform:translateX(-8px)}
-    50%{transform:translateX(8px)}
-    75%{transform:translateX(-6px)}
-    100%{transform:translateX(0)}
+  #game-container {
+    width: 95%;
+    max-width: 500px;
+    background: rgba(20,20,20,0.95);
+    border-radius: 20px;
+    padding: 20px 25px;
+    box-shadow: 0 0 25px #000;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
   }
-  .shake {animation:shake .45s ease;}
-  /* mobile-friendly bigger touch targets */
-  @media (max-width:520px){
-    .choice{font-size:17px;padding:16px;border-radius:14px;}
-    h1{font-size:16px;}
+  #text {
+    white-space: pre-wrap;
+    font-size: 1rem;
+    line-height: 1.5rem;
+    margin-bottom: 20px;
+    padding: 10px;
+    background: rgba(50,50,50,0.5);
+    border-radius: 15px;
+    box-shadow: inset 0 0 10px #000;
+    max-height: 60vh;
+    overflow-y: auto;
+  }
+  #choices {
+    display: flex;
+    flex-direction: column;
+  }
+  .choice-btn {
+    display: block;
+    margin: 8px 0;
+    padding: 12px;
+    width: 100%;
+    background-color: #444;
+    border: none;
+    border-radius: 12px;
+    color: #fff;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.2s;
+    text-align: center;
+  }
+  .choice-btn:hover {
+    background-color: #666;
+    transform: scale(1.02);
+  }
+  .choice-btn:active {
+    background-color: #888;
+    transform: scale(0.98);
+  }
+  ::-webkit-scrollbar {
+    width: 6px;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 3px;
+  }
+  ::-webkit-scrollbar-track {
+    background: rgba(0,0,0,0.1);
   }
 </style>
 </head>
 <body>
-<div class="app">
-  <header>
-    <div class="logo">BN</div>
-    <h1>바나나 월드에서 살아남기</h1>
-    <div class="meta">
-      <div>플레이: 0초</div>
-      <div>진행: 0%</div>
-    </div>
-  </header>
-
-  <main>
-    <section class="panel" style="flex:1;display:flex;flex-direction:column;">
-      <div aria-live="polite"></div>
-      <img alt="이미지 연출">
-      <div></div>
-      <div class="log" aria-hidden="false"></div>
-    </section>
-
-    <section style="display:flex;flex-direction:column;gap:8px;">
-      <div class="row">
-        <div class="stat">정체: 사람</div>
-        <div class="stat">바나나 호감: 0</div>
-        <div class="stat">단서: 0</div>
-      </div>
-      <div class="row">
-        <button class="btn ghost">처음부터</button>
-        <button class="btn ghost">힌트</button>
-      </div>
-      <div class="smalltext center">팁: 각 씬마다 '일반적 반응'과 '기발한 반응'을 골라보세요. 여러 루트를 열 수 있습니다.</div>
-    </section>
-  </main>
-
-  <footer>
-    <div class="smalltext">모든 데이터는 브라우저에 저장되지 않습니다. 게임을 재시작하면 초기화됩니다.</div>
-  </footer>
+<div id="game-container">
+  <div id="text"></div>
+  <div id="choices"></div>
 </div>
 
 <script>
-/*
-  대화형 텍스트 어드벤처: "바나나 월드에서 살아남기"
-  - 선택지 시스템만 유지, 아이템 제거
-  - 자동저장 제거
-  - 3개의 주요 분기 경로로 엔딩 단순화
-  - 각 스토리 텍스트 5줄 이상
-  - 선택지 3개 이하
-*/
-
-const memes = [
-  "https://i.imgur.com/4AiXzf8.gif",
-  "https://i.imgur.com/8Ilt2rZ.gif",
-  "https://i.imgur.com/0l5WnnT.gif",
-  "https://i.imgur.com/6KcFQq8.jpg"
-];
-
-function rand(arr){return arr[Math.floor(Math.random()*arr.length)];}
-
-// --- 게임 상태 (인벤토리 제거) ---
-let state = {
-  current: "intro_wake",
-  flags: {},     // 플래그들
-  repute: 0,     // 바나나 호감도
-  clues: 0,
-  timeStart: Date.now(),
-  timePlayed: 0,
-  history: []
-};
-
-// --- 스토리 데이터 ---
-// 각 노드는 text (5줄 이상 긴 서사), choices: [{text, id(next), effect(optional)}]
-// effect: function(state) to mutate flags/repute/clues
-// 전체 분기: 3개 주요 경로 (숨기기/위장/직접 대면)로 이어지는 엔딩 (귀환/하이브리드/바나나화)
 const story = {
-  intro_wake: {
-    title: "깨어난 아침",
-    text: `눈을 뜨니 주변이 온통 노란 빛으로 물들어 있다. 부드러운 햇살이 스며들고, 달콤한 과일 향기가 공기를 가득 채운다.
-손이 닿는 곳마다 부드럽고 말랑한 표면이 느껴지며, 바닥은 마치 쿠션처럼 푹신하다. 멀리서 정장 차림의 바나나들이 줄지어 걸어가는 모습이 보인다.
-전광판이 깜박이며 자동 안내 방송이 흘러나온다: "오늘도 평화로운 바나나 연합국에 오신 것을 환영합니다. 시민 여러분, 껍질 보습제를 잊지 마세요. 오늘의 껍질 세척 지수는 ★★★★☆ 입니다."
-당신은 이곳에서 유일한 인간이라는 사실을 깨닫는다. 바나나들의 시선이 슬쩍 당신을 향한다. 경찰 제복을 입은 노란 실루엣 두 개가 천천히 다가온다.
-심장이 쿵쾅거린다. 이 이상한 세계에서 어떻게 행동할 것인가? 이 선택이 당신의 운명을 결정지을 수 있다.`,
-    choices:[
-      { text: "숨기고 관찰하기 (안전 경로)", id:"hide_blend" },
-      { text: "위장 시도하기 (기발 경로)", id:"disguise_shell" },
-      { text: "직접 대면하기 (대담 경로)", id:"ask_police" }
+  start: {
+    text: `눈을 떠보니, 방 안은 낯설게 어둑했고, 창밖 거리에는 사람들이 가득했다.
+자세히 보니, 사람들은 모두 노란 껍질을 가진 바나나였다.
+카페의 손님, 횡단보도를 건너는 직장인, 심지어 거울 속 내 얼굴마저 바나나였다.
+나는 단 하나, 인간이라는 사실이 머릿속을 스치며 소름이 돋았다.
+멀리서 팔랑거리는 손짓과 바삭거리는 웃음소리가 들려오고, 심장은 터질 듯 뛰었다.
+나는 두려움과 호기심 사이에서 몸을 움직인다.`,
+    choices: [
+      { text: "도망친다", next: "run_start" },
+      { text: "바나나들과 대화 시도", next: "talk_start" },
+      { text: "현 상황 기록", next: "record_start" }
     ]
   },
-
-  // 경로 1: 숨기기와 관찰 (귀환 엔딩으로 이어짐)
-  hide_blend: {
-    title: "숨어 관찰",
-    text: `당신은 조용히 몸을 낮추고 바나나 무리 속에 섞여든다. 주변을 살피며 이 세계의 일상을 관찰한다.
-바나나들은 사회를 이루고 있다. 작은 가방을 멘 바나나가 신문을 들고 걸어가고, 노인 바나나는 공원 벤치에 앉아 껍질을 다듬는다.
-대화 소리가 들려온다: "껍질 등급이 떨어지면 사회에서 도태돼", "껍질교 예배에 가야 해". 이곳에서 외형 관리가 생존의 핵심임을 깨닫는다.
-관찰을 통해 바나나 연합국의 체계를 이해한다. 시민증이 필요하고, 포탈 같은 탈출구가 북쪽에 있을 수 있다는 단서를 얻는다.
-이제 더 깊이 파고들어야 한다. 바나나들의 시선이 여전히 불편하다. 다음 행동을 선택하라.`,
-    choices:[
-      { text: "더 깊이 관찰하며 단서 모으기", id:"observe_more" },
-      { text: "바나나와 가벼운 대화 시도", id:"talk_to_funny_banana" }
+  run_start: {
+    text: `나는 본능적으로 공원으로 달리기 시작했다.
+풀밭 사이로 몸을 숨기며 뒤를 돌아보니, 팔랑거리는 손과 커다란 눈의 바나나 경찰이 나를 추격하고 있었다.
+나무 사이로 몸을 숨기지만, 바나나 경찰은 팔랑거리는 손으로 나를 발견하려 애쓴다.
+심장이 터질 듯 뛰고, 땀방울이 이마를 타고 흘러내린다.
+"인간이 나타났다! 잡아라!" 그들의 목소리가 공원 전체를 울린다.
+나는 숨을 고르며 다음 행동을 고민한다.`,
+    choices: [
+      { text: "맞서 싸운다", next: "fight" },
+      { text: "몰래 도망친다", next: "run_continue" },
+      { text: "바나나 사회에 적응한다", next: "adapt" }
     ]
   },
-
-  observe_more: {
-    title: "더 관찰하기",
-    text: `시간을 들여 바나나들의 일상을 자세히 지켜본다. 아침에는 껍질 점검을 하고, 점심에는 주스 식당에서 모인다.
-오후에는 껍질 예술 전시를 즐긴다. 이 모든 것이 바나나 중심의 상식으로 돌아간다.
-한 바나나가 껍질을 잃어버려 울부짖는 장면을 본다. 경찰이 다가오지만, 당신은 멀리서 지켜보며 포탈에 대한 소문을 듣는다.
-포탈은 북쪽 관문에 있으며, 호감도가 높아야 접근할 수 있다는 사실을 알게 된다. 단서가 쌓인다.
-이제 움직일 때다. 안전하게 탈출하기 위해 호감을 쌓아야 할까, 아니면 바로 북쪽으로 갈까?`,
-    choices:[
-      { text: "호감 쌓기 위해 도움 주기", id:"help_banana", effect:(s)=>{ s.repute += 1; s.clues += 1; } },
-      { text: "바로 북쪽 관문으로 이동", id:"go_to_portal" }
+  fight: {
+    text: `나는 겁과 분노를 뒤섞어 주먹을 휘두르지만, 바나나 경찰의 팔랑거리는 움직임은 생각보다 민첩했다.
+손발이 묶이고 공포가 밀려온다.
+감옥으로 끌려가면서 주변 바나나들의 웃음과 조롱이 들려온다.
+창살 너머로 다른 바나나들이 팔랑거리는 손짓을 하며 나를 바라보았다.
+인간임을 잃고, 팔랑팔랑 움직이는 바나나 중 하나가 된다.`,
+    choices: [
+      { text: "엔딩 보기", next: "end_banana" }
     ]
   },
-
-  talk_to_funny_banana: {
-    title: "대화 시도",
-    text: `웃는 바나나에게 다가가 가볍게 대화를 건다. "이곳이 정말 재미있네요."라고 말하자 그가 웃으며 답한다.
-바나나 사회의 유머를 공유하며 호감을 얻는다. 그는 포탈에 대한 비밀을 속삭인다: "북쪽 관문, 호감이 핵심이야."
-대화로 바나나들의 문화, 종교, 계급을 더 알게 된다. 당신의 존재가 점점 받아들여진다.
-이제 이 친분을 이용해 탈출 계획을 세운다. 호감이 상승했다.
-다음 단계는? 포탈로 직행할까, 아니면 더 많은 도움을 구할까?`,
-    choices:[
-      { text: "친분 이용해 포탈 접근", id:"go_to_portal", effect:(s)=>{ s.repute += 1; s.clues += 1; } },
-      { text: "더 많은 바나나와 교류", id:"help_banana", effect:(s)=>{ s.repute += 1; } }
+  run_continue: {
+    text: `골목을 돌고, 빌딩 사이를 빠져나가며 바나나들의 눈을 피해 숨는다.
+뒤에서 들리는 팔랑거리는 소리와 웃음에 심장이 요동친다.
+오래된 지하철 출입구를 발견하고 살짝 몸을 숨긴다.
+주변을 살펴보니 작은 인적 없는 골목에 인간 안전 지대가 있다는 것을 알게 된다.
+잠시 안도의 한숨을 내쉬며 앞으로의 계획을 세운다.
+새로운 선택: 안전지대에 머무를지, 탈출 계획을 세울지 고민.`,
+    choices: [
+      { text: "탈출 계획 세운다", next: "escape" },
+      { text: "잠시 숨은 채 관찰한다", next: "adapt" },
+      { text: "바나나 사회 정보 수집", next: "study_banana" }
     ]
   },
-
-  help_banana: {
-    title: "바나나 돕기",
-    text: `울부짖는 바나나에게 다가가 도움을 준다. "괜찮아요, 함께 찾아봐요."라고 말하며 위로한다.
-그는 감동받아 호감을 보인다. 바나나 사회에서 도움은 큰 의미다. 당신의 평판이 오른다.
-대화 중 포탈에 대한 단서를 더 얻는다: "북쪽 관문은 신뢰받는 자만 열 수 있어."
-이제 호감이 충분히 쌓였다. 탈출의 기회가 보인다.
-포탈로 향할 준비가 되었다. 어떻게 접근할까?`,
-    choices:[
-      { text: "북쪽 관문으로 향하기", id:"go_to_portal" }
+  adapt: {
+    text: `나는 바나나 회의, 학교, 카페 등 바나나 사회 곳곳을 관찰하며 적응하기로 마음먹는다.
+팔랑팔랑 손짓, 특유의 웃음, 말투까지 흉내내며 행동을 연습한다.
+바나나들의 규칙과 계급, 서로 주고받는 신호를 몰래 배운다.
+내 인간임을 숨기는 것이 생존의 방법임을 깨닫는다.
+이상하게도, 코믹하고 어색한 바나나 사회의 일부로 스며드는 느낌이 들었다.
+주변을 더 관찰하며 안전하게 살아남는 전략을 구상한다.`,
+    choices: [
+      { text: "비밀 연구 → 탈출 계획 수립", next: "escape" },
+      { text: "완전히 적응 → 바나나 사회 일원", next: "end_adapt" },
+      { text: "바나나 친구 맺기", next: "friend_banana" }
     ]
   },
-
-  go_to_portal: {
-    title: "포탈 접근",
-    text: `북쪽 관문으로 이동한다. 문은 거대하고 노란 빛을 뿜는다. 주변 바나나들이 당신을 인정하는 듯하다.
-호감 덕분에 문이 열린다. 포탈이 활성화되며 빛이 퍼진다.
-인간 세계로 돌아가는 공간이 열린다. 마지막으로 바나나 월드를 돌아본다.
-이곳에서의 경험이 당신을 변화시켰다. 안전한 귀환이다.
-[귀환 엔딩: 안전하게 집으로 돌아옴]`,
-    choices:[
-      { text: "다시 시작", id:"intro_wake" }
-    ],
-    effect:(s)=>{ s.flags.safeEnding = true; }
-  },
-
-  // 경로 2: 위장 시도 (하이브리드 엔딩으로 이어짐)
-  disguise_shell: {
-    title: "껍질 위장",
-    text: `버려진 껍질을 머리에 쓰고 바나나처럼 보이려 한다. 처음엔 그럴싸하지만, 움직일 때마다 어색하다.
-주변 바나나가 수군거린다: "껍질 정렬이 이상해." 당신의 위장이 들킬 위험이 크다.
-그래도 이 접근으로 바나나들의 일상에 가까이 다가간다. 그들의 대화와 습관을 엿듣는다.
-위장 덕분에 시장으로 들어가 정보를 모은다. 포탈은 있지만, 위장된 자는 불완전한 전송을 겪을 수 있다는 소문.
-이제 위장을 유지할지, 포기할지 결정해야 한다. 선택이 운명을 바꾼다.`,
-    choices:[
-      { text: "위장 유지하며 탐색", id:"stay_natural" },
-      { text: "위장 강화 위해 과장하기", id:"decorate_shell" }
+  friend_banana: {
+    text: `나는 팔랑팔랑 웃는 바나나와 친구가 된다.
+그들은 나를 흥미롭게 바라보며 작은 장난을 치지만, 위험은 피하도록 도와준다.
+나는 정보를 얻고, 도시 곳곳을 안전하게 이동할 수 있게 된다.
+때로는 인간의 시선으로 그들의 행동을 분석하며 새로운 전략을 짠다.
+이 루트를 통해 바나나 사회에서 신뢰를 얻고, 탈출과 적응 사이에서 선택을 고민한다.`,
+    choices: [
+      { text: "탈출 계획 세운다", next: "escape" },
+      { text: "완전 적응", next: "end_adapt" },
+      { text: "관찰 계속", next: "study_banana" }
     ]
   },
-
-  stay_natural: {
-    title: "자연스럽게 행동",
-    text: `위장을 유지하며 자연스럽게 행동한다. 바나나 무리에 섞여 시장을 돌아다닌다.
-대화에서 포탈의 위치와 위험성을 알게 된다. 불완전한 상태로 들어가면 변형될 수 있다.
-호감을 조금 얻지만, 위장의 한계가 드러난다. 바나나 한 명이 의심한다.
-이제 포탈로 향할 때다. 위장이 유지되길 빌며.
-변형의 위험이 있지만, 탈출을 시도한다.`,
-    choices:[
-      { text: "포탈로 직행", id:"attempt_portal_hybrid", effect:(s)=>{ s.clues += 1; } }
+  study_banana: {
+    text: `나는 바나나 사회를 연구하며 규칙과 행동 패턴을 분석한다.
+비밀 회의, 카페에서 나누는 대화, 이동 경로까지 몰래 기록한다.
+어떤 바나나들은 나를 흥미롭게 바라보며 접근해 오지만, 위험을 감지하면 바로 피한다.
+나는 이 정보를 활용해 안전하게 탈출할 계획을 세운다.
+또한 바나나 사회에 적응할 수도 있는 방법도 동시에 고민한다.`,
+    choices: [
+      { text: "탈출 계획 수립", next: "escape" },
+      { text: "완전 적응", next: "end_adapt" },
+      { text: "바나나 친구와 협력", next: "friend_banana" }
     ]
   },
-
-  decorate_shell: {
-    title: "위장 과장",
-    text: `껍질에 장식을 더해 과장된 위장을 한다. 주변 바나나들이 웃으며 호기심을 보인다.
-이 기발함으로 호감을 얻지만, 너무 눈에 띄어 경찰의 주의를 끌 수 있다.
-대화 중 포탈의 비밀을 듣는다: 위장된 채 들어가면 두 세계의 혼합체가 된다.
-이제 선택의 결과가 다가온다. 포탈을 시도할까?
-변형될 위험을 감수하고 탈출한다.`,
-    choices:[
-      { text: "포탈 시도", id:"attempt_portal_hybrid", effect:(s)=>{ s.repute += 1; s.clues += 1; } }
+  escape: {
+    text: `나는 인간 안전 지대를 통해 현실로 돌아왔다.
+바나나들의 기억은 희미하게 남아, 현실과 기묘하게 연결된 느낌만 남았다.
+숨을 고르며 주위를 둘러보니, 다시 일상으로 돌아왔다는 안도감이 밀려온다.
+그러나 내 마음 한켠에는 바나나 사회의 기억과 이상한 모험이 남아 있다.
+나는 앞으로 이 기억을 어떻게 활용할지 고민한다.`,
+    choices: [
+      { text: "엔딩 보기", next: "end_escape" }
     ]
   },
-
-  attempt_portal_hybrid: {
-    title: "포탈 시도 (하이브리드)",
-    text: `포탈에 들어간다. 빛이 일그러지며 전송이 시작된다. 하지만 위장 때문에 불완전하다.
-당신의 몸이 변한다. 인간과 바나나의 특성이 섞인다. 노란 피부와 달콤한 향기가 난다.
-두 세계 어디에도 완전히 속하지 못한다. 새로운 삶이 시작된다.
-이 하이브리드 상태로 살아간다. 모험은 끝났지만, 정체성은 영원히 바뀌었다.
-[하이브리드 엔딩: 두 세계의 혼혈로 남음]`,
-    choices:[
-      { text: "다시 시작", id:"intro_wake" }
-    ],
-    effect:(s)=>{ s.flags.hybridEnding = true; }
-  },
-
-  // 경로 3: 직접 대면 (바나나화 엔딩으로 이어짐)
-  ask_police: {
-    title: "직접 질문",
-    text: `바나나 경찰에게 다가가 묻는다: "여기가 어디예요?" 그들은 당신을 분석하듯 쳐다본다.
-"껍질이 없군. 신분 확인." 이상한 질문을 받지만, 대담함이 인상을 준다.
-그들은 당신을 연구소로 데려간다. 과학자가 등장해 인간에 대한 호기심을 보인다.
-대면으로 바나나 사회의 깊이를 알게 된다. 하지만 실험 대상이 될 위험이 있다.
-이제 어떻게 대응할까? 솔직하게 할지, 거짓말할지.`,
-    choices:[
-      { text: "솔직하게 고백", id:"confess_human" },
-      { text: "거짓말로 둘러대기", id:"lie_allergy" }
+  talk_start: {
+    text: `바나나들이 내 눈을 바라보며 팔랑팔랑 손짓을 한다.
+"흥미로운 인간이군!" 그들의 목소리가 들린다.
+나는 숨을 고르며 다가가 볼까 고민한다.
+바나나들의 눈빛은 경계와 호기심이 섞여 있다.
+주변 환경은 웃음과 팔랑거림으로 가득 찼다.
+내 선택이 앞으로의 운명을 결정할 것이다.`,
+    choices: [
+      { text: "바나나 사회 규칙 배우기", next: "adapt" },
+      { text: "바나나 이용해 탈출", next: "escape" },
+      { text: "거짓말로 숨어 지내기", next: "hide" }
     ]
   },
-
-  confess_human: {
-    title: "정직한 고백",
-    text: `"저는 사람입니다."라고 솔직히 말한다. 바나나들은 논의 후, 당신을 연구 대상으로 삼는다.
-과학자가 포탈 실험을 제안한다. 협력하면 돌아갈 수 있지만, 실패하면 변형된다.
-실험 과정에서 바나나 사회의 비밀을 알게 된다. 호감이 상승한다.
-이제 실험에 참여한다. 결과는 불확실하다.
-변형의 위험이 있지만, 시도한다.`,
-    choices:[
-      { text: "실험 참여", id:"meet_scientist", effect:(s)=>{ s.repute += 1; s.clues += 1; } }
+  hide: {
+    text: `나는 인간 정체를 숨기고 은밀히 관찰한다.
+바나나들의 움직임, 회의, 규칙을 몰래 기록한다.
+그들의 장난과 팔랑거림 속에서 위험을 감지하며 이동한다.
+때때로 바나나들이 다가오지만, 숨거나 위장해 피한다.
+나는 관찰을 계속하며 탈출과 적응 중 최선의 선택을 고민한다.`,
+    choices: [
+      { text: "바나나 연구", next: "study_banana" },
+      { text: "적응 포기, 혼자 도망", next: "run_continue" }
     ]
   },
-
-  lie_allergy: {
-    title: "거짓말",
-    text: `"껍질 알레르기예요."라고 둘러댄다. 바나나들은 의심하지만, 절차를 밟는다.
-이 거짓말로 시간을 벌지만, 결국 연구소로 끌려간다. 과학자가 진실을 파헤친다.
-대화 중 포탈의 위험성을 알게 된다: 거짓으로 접근하면 바나나화될 수 있다.
-이제 선택의 결과가 드러난다. 실험을 피할 수 없다.
-변형을 감수하고 포탈을 시도한다.`,
-    choices:[
-      { text: "실험 수락", id:"meet_scientist", effect:(s)=>{ s.clues += 1; } }
+  record_start: {
+    text: `핸드폰으로 영상, 노트에 기록을 남기려 한다.
+그러나 바나나들이 내 행동을 주목하고 있다.
+조용히 숨을 고르며 기록을 계속한다.
+팔랑거리는 손짓과 바삭거리는 웃음에 긴장감이 높아진다.
+내 선택에 따라 인간으로서 살아남을지, 바나나 사회에 스며들지를 결정하게 된다.`,
+    choices: [
+      { text: "발견되면 맞서 싸운다", next: "fight" },
+      { text: "발견되기 전에 도망친다", next: "run_continue" },
+      { text: "바나나 사회 적응하며 기록", next: "adapt" }
     ]
   },
-
-  meet_scientist: {
-    title: "과학자 만남",
-    text: `과학자가 포탈 실험을 시작한다. "인간 포탈의 비밀을 풀자."라고 말한다.
-실험 중 빛이 폭주한다. 당신의 몸이 바나나로 변한다. 노란 껍질이 생긴다.
-이제 바나나 사회의 일원이 되었다. 인간으로 돌아갈 수 없다.
-새로운 삶을 받아들인다. 껍질을 가꾸며 산다.
-[바나나화 엔딩: 바나나로 완전히 동화됨]`,
-    choices:[
-      { text: "다시 시작", id:"intro_wake" }
-    ],
-    effect:(s)=>{ s.flags.bananaEnding = true; }
+  end_banana: {
+    text: `인간이었던 나는 결국 바나나가 되어버렸다.
+팔랑팔랑 움직이며, 바나나들과 함께 코믹하게 살아간다.
+내 인간으로서의 기억은 희미하지만, 바나나 사회의 일원이 된 현실은 생생하다.
+낯설지만 어색하지 않은 새로운 삶이 시작된다.
+웃음과 팔랑거림이 일상으로 자리 잡는다.`,
+    choices: []
+  },
+  end_adapt: {
+    text: `인간임을 숨기고 완전히 바나나 사회에 적응했다.
+바나나 회의와 카페에 섞여 살아가며, 나는 이제 팔랑팔랑 웃는 일원이 되었다.
+사회 규칙을 이해하며 바나나들과 관계를 쌓는다.
+내 인간적인 감각은 남아 있지만, 바나나 사회 안에서 편안함을 느낀다.
+코믹하고 이상한 일상이 나의 새로운 현실이 된다.`,
+    choices: []
+  },
+  end_escape: {
+    text: `나는 인간 안전 지대를 통해 현실로 돌아왔다.
+바나나들의 기억은 희미하게 남아, 현실과 기묘하게 연결된 느낌만 남았다.
+숨을 고르며 주위를 둘러보니, 다시 일상으로 돌아왔다는 안도감이 밀려온다.
+그러나 내 마음 한켠에는 바나나 사회의 기억과 이상한 모험이 남아 있다.
+이 모험은 앞으로 나의 선택과 삶에 영향을 줄 것이다.`,
+    choices: []
+  },
+  // 추가 신규 루트 예시
+  secret_path: {
+    text: `골목에서 우연히 숨겨진 지하 통로를 발견했다.
+좁고 어두운 터널 속, 팔랑거리는 그림자와 이상한 소리가 이어진다.
+벽에는 오래된 바나나 표시와 경고가 새겨져 있다.
+긴장감 속에서도 모험심이 나를 앞으로 나아가게 한다.
+통로 끝에 무엇이 기다리고 있을지 알 수 없다.`,
+    choices: [
+      { text: "탈출 시도", next: "escape" },
+      { text: "통로 탐색 계속", next: "hidden_discovery" }
+    ]
+  },
+  hidden_discovery: {
+    text: `터널 깊숙이 들어가자, 바나나들의 실험 장치와 비밀 연구 자료가 보인다.
+이 정보를 활용하면 탈출할 수 있는 전략을 세울 수 있다.
+하지만 동시에, 바나나 사회에 적응해야 하는 선택지 또한 고민된다.
+긴장과 호기심, 두 감정이 교차하며 나는 선택을 강요받는다.
+조심스럽게 정보를 수집하며 다음 행동을 결정한다.`,
+    choices: [
+      { text: "탈출 계획", next: "escape" },
+      { text: "바나나 사회 적응", next: "end_adapt" }
+    ]
+  },
+  banana_gang: {
+    text: `도시 한쪽, 바나나 조직과 마주쳤다.
+위험하지만, 그들과 협력하면 정보를 얻거나 안전하게 이동할 수 있다.
+배신하면 싸움이 벌어지고, 생존 확률이 낮아진다.
+조직의 두목이 팔랑팔랑 손짓으로 나를 유심히 바라본다.
+나는 신중하게 대응 방식을 선택해야 한다.`,
+    choices: [
+      { text: "협력", next: "adapt" },
+      { text: "배신", next: "fight" },
+      { text: "탈출", next: "escape" }
+    ]
+  },
+  banana_lab: {
+    text: `바나나 실험실을 발견했다.
+신비로운 장치와 연구 자료들이 가득하다.
+바나나들이 인간을 바나나로 변형시키는 연구를 진행 중이다.
+이 정보를 활용하면 탈출이나 적응 선택에 유리하다.
+위험하지만, 인간으로서 살아남기 위해 전략적으로 움직여야 한다.`,
+    choices: [
+      { text: "연구 계속", next: "study_banana" },
+      { text: "탈출 계획", next: "escape" },
+      { text: "적응", next: "end_adapt" }
+    ]
   }
 };
 
-// --- DOM 참조 ---
-const storyEl = document.getElementById('story');
-const choicesEl = document.getElementById('choices');
-const memeEl = document.getElementById('meme');
-const logEl = document.getElementById('log');
-const timePlayedEl = document.getElementById('timePlayed');
-const progressText = document.getElementById('progressText');
-const statRepute = document.getElementById('statRepute');
-const statFlags = document.getElementById('statFlags');
-
-function appendLog(text){
-  const p = document.createElement('div');
-  p.textContent = `[${new Date().toLocaleTimeString()}] ${text}`;
-  logEl.prepend(p);
-}
-
-// --- 렌더 및 노드 이동 로직 ---
-function render(){
-  // 안전: current가 null일때 되돌리기
-  if(!state.current) state.current = 'intro_wake';
-  const node = story[state.current];
-  // update HUD
-  renderHUD();
-
-  if(!node){
-    storyEl.textContent = "오류: 해당 씬이 존재하지 않습니다.";
-    choicesEl.innerHTML = `<div class="choice small">게임 오류. 처음으로 돌아갑니다.</div>`;
-    return;
+function showScene(tag) {
+  const scene = story[tag];
+  const textDiv = document.getElementById('text');
+  const choicesDiv = document.getElementById('choices');
+  textDiv.innerText = scene.text;
+  choicesDiv.innerHTML = '';
+  if (scene.choices.length > 0) {
+    scene.choices.forEach(choice => {
+      const btn = document.createElement('button');
+      btn.innerText = choice.text;
+      btn.classList.add('choice-btn');
+      btn.onclick = () => showScene(choice.next);
+      choicesDiv.appendChild(btn);
+    });
   }
-
-  // show text with small fade
-  storyEl.style.opacity = 0;
-  setTimeout(()=> {
-    storyEl.textContent = node.text;
-    storyEl.style.opacity = 1;
-  },180);
-
-  // random meme show occasionally
-  if(Math.random() < 0.18){
-    memeEl.src = rand(memes);
-    memeEl.style.display = '';
-  } else memeEl.style.display = 'none';
-
-  // build choices
-  choicesEl.innerHTML = '';
-  node.choices.forEach((c,idx)=>{
-    const btn = document.createElement('button');
-    btn.className = 'choice';
-    btn.innerHTML = c.text;
-    btn.onclick = ()=>{ choose(c); };
-    choicesEl.appendChild(btn);
-  });
-
-  // progress estimate (crudely by unique visited nodes / total)
-  const visited = new Set(state.history);
-  visited.add(state.current);
-  const totalNodes = Object.keys(story).length;
-  const progress = Math.min(100, Math.floor((visited.size / totalNodes) * 100));
-  progressText.textContent = `진행: ${progress}%`;
 }
 
-function renderHUD(){
-  // timePlayed
-  state.timePlayed = Math.floor((Date.now() - state.timeStart)/1000);
-  timePlayedEl.textContent = `플레이: ${state.timePlayed}s`;
-  statRepute.textContent = `바나나 호감: ${state.repute||0}`;
-  statFlags.textContent = `단서: ${state.clues||0}`;
-}
-
-function choose(choice){
-  // process effect if provided
-  if(choice.effect && typeof choice.effect === 'function'){
-    try{ choice.effect(state); }catch(e){ console.error(e); }
-  }
-  // push history
-  state.history = state.history || [];
-  state.history.push(state.current);
-
-  // transition
-  state.current = choice.id;
-
-  render();
-}
-
-// --- Controls binding ---
-document.getElementById('restartBtn').onclick = ()=>{
-  if(confirm('정말로 처음부터 시작하시겠습니까?')){
-    state.current = 'intro_wake'; state.flags={}; state.repute=0; state.clues=0; state.history=[];
-    state.timeStart = Date.now();
-    render();
-  }
-};
-document.getElementById('hintBtn').onclick = ()=>{
-  // contextual hint
-  const cur = story[state.current];
-  let hint = "현재 상황을 천천히 살피세요.";
-  if(cur && cur.title && cur.title.includes('관찰')) hint = "호감을 쌓아 안전하게 탈출하세요.";
-  if(cur && cur.title && cur.title.includes('위장')) hint = "위장은 위험하지만 독특한 결과를 가져올 수 있습니다.";
-  if(cur && cur.title && cur.title.includes('대면')) hint = "직접 대면은 실험으로 이어질 수 있습니다.";
-  alert('힌트: ' + hint);
-};
-
-// initial start
-render();
-appendLog("새 게임을 시작합니다.");
-
-// periodic time update
-setInterval(()=>{ renderHUD(); }, 1000);
+showScene('start');
 </script>
 </body>
 </html>
+
