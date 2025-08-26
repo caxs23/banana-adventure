@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no" />
-<title>바나나 월드에서 살아남기 — 완성판</title>
+<title>바나나 월드에서 살아남기 — 확장완성판</title>
 <style>
   :root{
     --bg:#0b0b0c;
@@ -13,43 +13,69 @@
     --glass: rgba(255,255,255,0.03);
     --danger:#ff6b6b;
   }
-  html,body{height:100%;margin:0;font-family:Inter, "Noto Sans KR", system-ui, -apple-system, "Apple SD Gothic Neo", "Malgun Gothic", "Segoe UI", Roboto, "Helvetica Neue", Arial; background:linear-gradient(180deg,#070708 0%, #111217 100%); color: #fff; -webkit-font-smoothing:antialiased;}
-  .app{display:flex;flex-direction:column;height:100vh;padding:16px;box-sizing:border-box;max-width:900px;margin:0 auto}
-  header{display:flex;align-items:center;gap:12px;}
-  .logo{width:56px;height:56px;border-radius:12px;background:linear-gradient(135deg,#fff2b8,#ffd54f);display:flex;align-items:center;justify-content:center;font-weight:800;color:#222;font-size:20px;box-shadow:0 10px 30px rgba(0,0,0,0.6);}
-  h1{font-size:18px;margin:0;letter-spacing:0.2px}
-  .meta{margin-left:auto;text-align:right;font-size:12px;color:var(--muted);}
-  main{flex:1;display:flex;flex-direction:column;gap:12px;margin-top:12px;}
-  .panel{background:linear-gradient(180deg,var(--panel), #0e0e12);border-radius:16px;padding:16px;box-shadow:0 12px 40px rgba(0,0,0,0.6);backdrop-filter:blur(6px);display:flex;flex-direction:column;}
-  #story{flex:1;min-height:260px; font-size:16px; line-height:1.7; white-space:pre-wrap; opacity:1; transition:opacity .28s ease;}
-  #meme{width:100%;border-radius:10px;margin-top:12px;display:none;max-height:240px;object-fit:cover;border:1px solid rgba(255,255,255,0.03)}
-  #choices{display:flex;flex-direction:column;gap:10px;margin-top:12px;}
+  html,body{
+    height:100%; margin:0;
+    font-family:Inter, "Noto Sans KR", system-ui, -apple-system,
+      "Apple SD Gothic Neo", "Malgun Gothic", "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    background:linear-gradient(180deg,#070708 0%, #111217 100%);
+    color: #fff; -webkit-font-smoothing:antialiased;
+  }
+  .app{
+    display:flex; flex-direction:column; height:100vh;
+    padding:16px; box-sizing:border-box; max-width:900px; margin:0 auto;
+  }
+  header{display:flex; align-items:center; gap:12px;}
+  .logo{
+    width:56px; height:56px; border-radius:12px;
+    background:linear-gradient(135deg,#fff2b8,#ffd54f);
+    display:flex; align-items:center; justify-content:center;
+    font-weight:800; color:#222; font-size:20px;
+    box-shadow:0 10px 30px rgba(0,0,0,0.6);
+  }
+  h1{font-size:18px; margin:0; letter-spacing:0.2px}
+  .meta{margin-left:auto; text-align:right; font-size:12px; color:var(--muted);}
+  main{flex:1; display:flex; flex-direction:column; gap:12px; margin-top:12px;}
+  .panel{
+    background:linear-gradient(180deg,var(--panel), #0e0e12);
+    border-radius:16px; padding:16px;
+    box-shadow:0 12px 40px rgba(0,0,0,0.6);
+    backdrop-filter:blur(6px); display:flex; flex-direction:column;
+  }
+  #story{
+    flex:1; min-height:260px; font-size:16px; line-height:1.8;
+    white-space:pre-wrap; opacity:1; transition:opacity .28s ease;
+  }
+  #meme{ width:100%; border-radius:10px; margin-top:12px; display:none; max-height:240px; object-fit:cover; border:1px solid rgba(255,255,255,0.03) }
+  #choices{ display:flex; flex-direction:column; gap:10px; margin-top:12px; }
   .choice{
-    padding:14px;border-radius:14px;background:linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
-    border:1px solid rgba(255,255,255,0.04); font-size:16px; text-align:left; cursor:pointer; box-shadow:0 8px 24px rgba(0,0,0,0.45);
+    padding:14px; border-radius:14px;
+    background:linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+    border:1px solid rgba(255,255,255,0.04);
+    font-size:16px; text-align:left; cursor:pointer;
+    box-shadow:0 8px 24px rgba(0,0,0,0.45);
     color: #fff; width:100%;
   }
-  .choice:active{transform:translateY(2px);}
-  .choice.small{padding:10px;font-size:14px;}
-  .row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
-  .stat{font-size:13px;color:var(--muted);padding:8px 12px;border-radius:999px;background:var(--glass);border:1px solid rgba(255,255,255,0.03);}
-  footer{display:flex;gap:8px;align-items:center;justify-content:space-between;margin-top:12px;}
-  .btn{padding:10px 12px;border-radius:10px;background:var(--accent);color:#222;font-weight:800;border:none;cursor:pointer;box-shadow:0 10px 20px rgba(255,213,79,0.12);}
-  .btn.ghost{background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--muted);}
-  .smalltext{font-size:12px;color:var(--muted);}
-  .log{max-height:140px;overflow:auto;padding:10px;border-radius:12px;background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent);font-size:13px;color:var(--muted); margin-top:12px;}
-  .center{display:flex;justify-content:center;align-items:center;}
-  .hidden{display:none;}
-  @keyframes shake {0%{transform:translateX(0)}25%{transform:translateX(-8px)}50%{transform:translateX(8px)}75%{transform:translateX(-6px)}100%{transform:translateX(0)}}
-  .shake {animation:shake .45s ease;}
-  @media (max-width:520px){.choice{font-size:17px;padding:16px;border-radius:14px;}h1{font-size:16px;}}
+  .choice:active{ transform:translateY(2px); }
+  .choice.small{ padding:10px; font-size:14px; }
+  .row{ display:flex; gap:8px; align-items:center; flex-wrap:wrap }
+  .stat{ font-size:13px; color:var(--muted); padding:8px 12px; border-radius:999px; background:var(--glass); border:1px solid rgba(255,255,255,0.03); }
+  footer{ display:flex; gap:8px; align-items:center; justify-content:space-between; margin-top:12px; }
+  .btn{ padding:10px 12px; border-radius:10px; background:var(--accent); color:#222; font-weight:800; border:none; cursor:pointer; box-shadow:0 10px 20px rgba(255,213,79,0.12); }
+  .btn.ghost{ background:transparent; border:1px solid rgba(255,255,255,0.06); color:var(--muted); }
+  .smalltext{ font-size:12px; color:var(--muted); }
+  .log{ max-height:140px; overflow:auto; padding:10px; border-radius:12px; background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent); font-size:13px; color:var(--muted); margin-top:12px; }
+  .center{ display:flex; justify-content:center; align-items:center; }
+  .hidden{ display:none; }
+  @keyframes shake { 0%{transform:translateX(0)} 25%{transform:translateX(-8px)} 50%{transform:translateX(8px)} 75%{transform:translateX(-6px)} 100%{transform:translateX(0)} }
+  .shake { animation:shake .45s ease; }
+  @media (max-width:520px){ .choice{ font-size:17px; padding:16px; border-radius:14px; } h1{ font-size:16px; } }
 </style>
 </head>
 <body>
 <div class="app">
   <header>
     <div class="logo">BN</div>
-    <h1>바나나 월드에서 살아남기 — 완성판</h1>
+    <h1>바나나 월드에서 살아남기 — 확장완성판</h1>
     <div class="meta">
       <div id="timePlayed">플레이: 0초</div>
       <div id="progressText">진행: 0%</div>
@@ -75,22 +101,24 @@
         <button class="btn ghost" id="hintBtn">힌트</button>
         <button class="btn" id="exportBtn">HTML 다운로드</button>
       </div>
-      <div class="smalltext center">팁: 선택은 각기 다른 관점(은밀함 / 독창성 / 직면)을 만듭니다. 모든 루트는 끝까지 연결되어 있습니다.</div>
+      <div class="smalltext center">팁: 선택은 은밀함 / 기발함 / 직면의 관점을 만듭니다. 모든 루트는 끝까지 연결됩니다.</div>
     </section>
   </main>
 
   <footer>
-    <div class="smalltext">이 파일은 오프라인에서 실행 가능합니다. 플레이 중 새로고침하면 초기화됩니다.</div>
-    <div class="smalltext">버전: 완성판 · 스토리 확장</div>
+    <div class="smalltext">오프라인 실행 가능 — 새로고침 시 초기화됩니다.</div>
+    <div class="smalltext">버전: 확장완성판 · 스토리·엔딩 강화</div>
   </footer>
 </div>
 
 <script>
-// 유틸
-function rand(arr){return arr[Math.floor(Math.random()*arr.length)];}
-function nowTime(){return new Date().toLocaleTimeString();}
+/* --------------------------
+   유틸 함수
+   -------------------------- */
+function rand(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
+function nowTime(){ return new Date().toLocaleTimeString(); }
 
-// meme 이미지
+/* meme 이미지 (랜덤 연출) */
 const memes = [
   "https://i.imgur.com/4AiXzf8.gif",
   "https://i.imgur.com/8Ilt2rZ.gif",
@@ -98,7 +126,7 @@ const memes = [
   "https://i.imgur.com/6KcFQq8.jpg"
 ];
 
-// 상태
+/* 상태 초기화 */
 let state = {
   current: 'intro_wake',
   flags: {},
@@ -109,227 +137,259 @@ let state = {
   history: []
 };
 
-function appendLog(text){ const p = document.createElement('div'); p.textContent = `[${nowTime()}] ${text}`; document.getElementById('log').prepend(p); }
+function appendLog(text){
+  const p = document.createElement('div');
+  p.textContent = `[${nowTime()}] ${text}`;
+  document.getElementById('log').prepend(p);
+}
 
-// --- 확장된 스토리 노드 ---
-// 각 노드는 text(최소 5줄), choices(최대 3), effect 선택적
+/* --------------------------
+   스토리 데이터 (확장)
+   - 모든 노드는 충분한 서술(최소 ~5문장)
+   - 선택은 effect로 상태 변경
+   -------------------------- */
 const story = {
   intro_wake: {
     title: '깨어난 아침',
-    text: `눈을 뜨자 세상이 노란빛으로 가득하다. 공기는 달콤한 향기로 채워져 있고, 어디선가 멜로디 같은 합창이 들려온다.
-당신은 침대 대신 부드러운 껍질 같은 표면 위에 누워 있다. 손끝으로 문득 느껴지는 건 사람의 피부가 아닌, 묘하게 따뜻한 표면이다.
-멀리 전광판에는 시민 규칙과 오늘의 껍질 등급이 떠 있다. 지나가는 바나나들이 당신을 흘낏 바라본다 — '낯선 존재'.
-이곳은 바나나 월드. 당신은 인간으로서 이 세계에서 살아남아 다시 돌아가야 한다. 첫 선택이 운명을 좌우한다.
-어떤 방식으로 첫발을 뗄 것인가?`,
+    text:
+`눈을 뜨니 모든 것이 노랗다. 벽은 껍질처럼 부드럽고, 공기엔 달콤한 향이 떠돈다.
+발밑에서는 가벼운 윙윙거림이 들리고, 멀리선 합창처럼 규칙적 소리가 흐른다.
+전광판엔 '오늘의 등급'이 떠 있고, 지나가는 바나나들은 당신을 낯선 존재로 바라본다.
+당신은 '인간'이다. 돌아가야 한다. 첫 선택이 앞으로의 운명을 엮어간다.`,
     choices:[
-      { text:'숨기고 관찰하기 — 안전한 길', id:'hide_blend' },
-      { text:'껍질로 위장해 섞이기 — 기발한 길', id:'disguise_shell' },
+      { text:'숨어 관찰하기 — 안전한 접근', id:'hide_blend' },
+      { text:'껍질로 위장해 섞이기 — 기발한 접근', id:'disguise_shell' },
       { text:'바나나에게 직접 묻기 — 정면 돌파', id:'ask_police' }
     ]
   },
 
-  // 숨기기 루트
+  /* --------------- 숨기기 루트 --------------- */
   hide_blend: {
     title:'숨어 관찰',
-    text:`당신은 작은 골목 구석에 몸을 숨기고 바나나들의 생활을 관찰한다. 이 사회는 규칙과 외형을 무척 중시한다.
-어떤 바나나는 매일 아침 껍질 광을 내고, 어떤 바나나는 등급표 앞에서 긴 줄을 선다. 사람 대신 바나나가 행정과 문화를 만든다.
-당신은 외부인으로서 가능한 눈에 띄지 않아야 한다. 조용히 행동하면 신뢰를 얻을 수 있는 기회를 포착할 수 있다.
-멀리서 누군가 포탈의 존재에 대해 속삭이는 것을 들었다. 북쪽 관문. 접근엔 '신뢰'가 필요하단다.
-이제 무엇을 할 것인가?`,
+    text:
+`당신은 골목의 그림자 속에 웅크려 바나나들의 생활을 관찰한다.
+이 사회는 외형과 규범에 민감하고, 작은 실수 하나가 곧 불신으로 이어진다.
+시장의 잡담 속에 '포탈'에 대한 낮은 속삭임이 섞여 있었다 — 북쪽 관문.
+포탈은 주로 신뢰와 단서를 요구한다는 말이 반복된다.
+안전하지만 더디다. 어떻게 움직일 것인가?`,
     choices:[
       { text:'더 깊이 관찰해 단서 모으기', id:'observe_more' },
-      { text:'가벼운 도움 제공으로 호감 쌓기', id:'help_banana' }
+      { text:'작은 도움을 주며 호감 쌓기', id:'help_banana' }
     ]
   },
 
   observe_more: {
     title:'더 관찰하기',
-    text:`당신은 하루를 통째로 바나나들을 관찰하며 그들의 규범을 파악한다. 어떤 제스처가 예의인지, 어떤 말이 금기인지 알게 된다.
-시장의 한 상인은 포탈에 관해 조심스레 말한다. 포탈은 '선택받은' 자만 지나갈 수 있으며, 호감과 단서가 결합되어야 열린다.
-또 다른 단서는 연합의 기록 보관소에 숨어있다고 한다. 그러나 기록 보관소는 높은 등급의 시민만 출입이 가능하다.
-당신은 안전하게 귀환하려면 신뢰를 쌓고, 단서를 모아 보관소의 접근 권한을 얻어야 한다는 계획을 세운다.
-다음 행동을 고르자.`,
+    text:
+`당신은 시장, 광장, 작은 기계실까지 하루 종일 염탐한다.
+바나나들의 손짓·인사법·색 배치 같은 규범들을 기록한다 — 이것들이 출입 허가의 열쇠일지도 모른다.
+낡은 기록 보관소와 포탈의 구조를 이어주는 단서가 있다는 소문을 듣는다.
+하지만 보관소는 높은 등급의 시민만 출입할 수 있다 — 기회를 만들어야 한다.
+다음에 무엇을 할 것인가?`,
     choices:[
       { text:'호감 쌓기(도움 제공)', id:'help_banana', effect:(s)=>{ s.repute += 1; s.clues += 1; } },
-      { text:'기회를 노려 기록 보관소를 탐색', id:'sneak_library' }
+      { text:'기회를 보고 기록 보관소 잠입', id:'sneak_library' }
     ]
   },
 
   help_banana: {
     title:'바나나 돕기',
-    text:`당신은 길에서 넘어져 우는 바나나를 도와준다. 작은 친절이지만, 바나나에게는 큰 의미다. 고마움의 표시로 작은 단서를 얻는다.
-그는 당신에게 '포탈에는 마음을 보여주는 의식이 있다'고 속삭인다. 단서는 늘 직접적인 것은 아니다 — 관찰과 신뢰가 필요하다.
-호감이 오른다. 하지만 너무 눈에 띄지 않도록 조심해야 한다. 호감이 쌓이면 북쪽 관문 근처의 보호소에서 도움을 받을 수 있다.
-당신은 이제 더 안전한 선택을 할 것인가, 아니면 빠른 탈출 시도를 할 것인가.`,
+    text:
+`길에서 작은 바나나가 넘어졌다. 당신은 본능적으로 손을 내밀어 일으킨다.
+그 바나나는 놀란 얼굴로 당신을 바라보다가 작게 속삭인다 — "의식에 관해 알아둬라."
+그의 감사 표시로 작은 실마리 하나를 건네준다. 직접적인 답은 아니었지만 방향성이 생긴다.
+호감이 오른다. 이 호감은 당신에게 문을 여는 단서가 될 수 있다.`,
     choices:[
-      { text:'천천히 호감 쌓기(안전)', id:'build_trust' },
-      { text:'정보를 모아 포탈로 이동(모험)', id:'go_to_portal' }
+      { text:'조용히 신뢰를 쌓는다(안전)', id:'build_trust', effect:(s)=>{ s.repute += 1; } },
+      { text:'정보를 모아 포탈로 향한다(모험)', id:'go_to_portal' }
     ],
     effect:(s)=>{ s.repute += 1; }
   },
 
   sneak_library: {
     title:'기록 보관소 잠입',
-    text:`당신은 한밤중에 기록 보관소 근처를 맴돈다. 경비는 많지만, 관찰한 동선으로 조심스럽게 접근한다.
-작은 창고 문틈으로 오래된 문서와 포탈에 관한 고풍스러운 지도를 발견한다. 지도는 북쪽 관문의 내부 구조를 보여준다.
-하지만 발각되어 도망칠 수밖에 없었다. 그래도 단서를 한 조각 얻었다. 이 조각은 포탈의 접근 암호 일부일지도 모른다.
-단서는 재빠르게 머릿속에 저장해야 한다. 이제 당신의 선택은?`,
+    text:
+`밤, 당신은 보관소 근처를 맴돈다. 경비의 동선을 기억한 대로 움직이면 틈이 보인다.
+작은 창으로 오래된 지도와 기호들이 보이고, 포탈의 내부구조 일부를 해독할 수 있다.
+그러나 발각되어 숨을 죽이며 도망쳐야 했다. 그래도 단서 한 조각을 손에 넣었다.
+이것으로 무엇을 할 것인가?`,
     choices:[
       { text:'호감 쌓으러 돌아가기', id:'build_trust', effect:(s)=>{ s.clues += 1; } },
-      { text:'지도 기반으로 포탈로 직행', id:'go_to_portal', effect:(s)=>{ s.clues += 1; } }
+      { text:'지도를 가지고 포탈로 이동', id:'go_to_portal', effect:(s)=>{ s.clues += 1; } }
     ]
   },
 
   build_trust: {
     title:'신뢰 쌓기',
-    text:`며칠 동안 당신은 조심스럽게 작은 호의와 봉사를 이어간다. 도움을 준 바나나들은 당신을 기억하고 추천서를 남긴다.
-추천서는 북쪽 관문 근처의 안내원에게 제출할 수 있다. 당신의 호감은 점차 숫자로 나타나기 시작한다.
-이 과정은 지루하지만 안전하다. 인간으로서의 정체를 최대한 숨기며, 사회적 신뢰를 획득하는 것이 당신의 목표다.
-충분한 신뢰를 얻었을 때, 안내원이 비밀스런 통로로 안내할 수 있다고 한다. 당신은 준비되었는가?`,
+    text:
+`며칠간 당신은 눈에 띄지 않게 봉사를 하고 작은 부탁을 들어준다.
+바나나들은 당신의 도움을 기억하고, 몇몇은 추천서를 써주었다.
+추천서는 안내원에게 제출 가능하며, 안내원은 비밀의 통로에 대해 이야기해줄지도 모른다.
+지루하지만 안정적인 길이다. 당신은 이 길을 계속 걷겠는가, 아니면 속도를 올리겠는가?`,
     choices:[
-      { text:'안내원을 찾아가 통로 요청', id:'seek_guide' },
-      { text:'마지막 준비를 하고 포탈로 향한다', id:'go_to_portal' }
+      { text:'안내원에게 부탁한다', id:'seek_guide' },
+      { text:'마지막 준비를 마치고 포탈로 향한다', id:'go_to_portal' }
     ],
     effect:(s)=>{ s.repute += 1; }
   },
 
   seek_guide: {
     title:'안내원과의 약속',
-    text:`안내원은 검은 모자를 쓴 바나나였다. 그는 당신의 행동과 추천서를 보고 수긍한다.
-"우리는 외부인을 환영하지 않는다. 하지만 네 마음이 참되면 도울 수 있다." 그는 북쪽 관문의 진입 조건을 알려준다.
-필요한 것은 '신뢰의 표식'과 '단서의 결합'이다. 당신은 바나나 연합의 작은 의식에 참석하라는 요청을 받는다.
-의식은 위험과 보상이 공존한다 — 안전하게 귀환할 기회가 보장된다는 소식과 함께. 다음을 결정하라.`,
+    text:
+`안내원은 검은 모자를 쓴 바나나였다. 그는 여러 추천서를 들여다보며 고개를 끄덕인다.
+"우리는 외부인을 환영하지는 않지. 하지만 네 마음이 참되다면 도울 수 있다." 그는 신뢰의 표식과 단서의 결합을 요구한다.
+작은 의식에 참여하라 권유한다. 위험을 감수하겠는가?`,
     choices:[
-      { text:'의식에 참여해 신뢰의 표식 얻기', id:'ritual' },
-      { text:'의식은 피하고 포탈로 도망가기', id:'go_to_portal' }
+      { text:'의식에 참여해 표식 얻기', id:'ritual' },
+      { text:'의식을 피하고 포탈을 노린다', id:'go_to_portal' }
     ]
   },
 
   ritual: {
     title:'신뢰의 의식',
-    text:`의식은 외형적 단장과 진심 어린 서약으로 이루어져 있다. 당신은 진실을 말하라는 요청을 받는다.
-당신은 인간임을 밝힐 것인가, 숨길 것인가? 의식에서 진심을 보이는 자는 특별한 표식을 받는다고 한다.
-이 순간 당신의 선택은 단지 행동 이상의 의미를 가진다 — 정체성과 귀환의 가능성을 동시에 시험한다.
-어떻게 대답할 것인가?`,
+    text:
+`의식은 외형적 단장과 내면의 고백으로 구성되어 있다. 참가자들은 각자의 진심을 말한다.
+당신은 인간임을 밝히느냐, 아니면 숨기느냐 선택해야 한다 — 둘 다 결과를 낳는다.
+정직함은 더 큰 신뢰를, 위장은 제한된 통과를 준다. 순간의 선택이 곧 귀환의 가능성을 좌우한다.
+어떻게 답할 것인가?`,
     choices:[
-      { text:'정직하게 고백하고 표식 받기', id:'honest_ritual', effect:(s)=>{ s.repute += 2; s.clues += 1; } },
-      { text:'정체를 숨기고 의식 통과 시도', id:'fake_ritual', effect:(s)=>{ s.repute += 1; } }
+      { text:'정직하게 고백하고 표식 받기', id:'honest_ritual', effect:(s)=>{ s.repute += 2; s.clues += 1; s.flags.honestRitual = true; } },
+      { text:'정체를 숨기고 의식을 통과', id:'fake_ritual', effect:(s)=>{ s.repute += 1; s.flags.fakeRitual = true; } }
     ]
   },
 
   honest_ritual: {
     title:'정직의 보상',
-    text:`당신은 숨기지 않고 마음을 고한다. 청중은 잠시 침묵했고, 그러고는 부드러운 박수가 이어진다.
-진심이 전달되자 의식의 장이 당신에게 작은 흉패를 준다. "신뢰의 표식" — 포탈 접근 시 도움이 될 것이다.
-이제 당신은 포탈 접근에 필요한 조건을 대부분 갖췄다. 마지막으로 준비해 포탈로 향하자.
-(안전 루트의 클라이맥스가 코앞에 있다.)`,
+    text:
+`당신은 인간임을 고백했다. 장내에는 잠깐의 침묵이 흐르고, 이내 따뜻한 박수가 번진다.
+진심을 본 그들은 작은 금속 흉패를 건넨다 — '신뢰의 표식'이다. 이 표식은 심사대에서 유효하게 작동할 것이다.
+마지막 준비를 하고 북쪽 관문으로 향한다. 이제 모든 것이 결말을 향해 모인다.`,
     choices:[
-      { text:'북쪽 관문으로 향하기', id:'go_to_portal' }
+      { text:'북쪽 관문으로 향한다', id:'go_to_portal' }
     ]
   },
 
-  // 위장 루트
+  fake_ritual: {
+    title:'속임의 통과',
+    text:
+`당신은 평정심을 유지하며 의식을 통과했다. 표식 비슷한 장신구를 받았지만, 그것은 완전한 신뢰를 담보하지 못한다.
+일부 관찰자들은 여전히 눈썰미 있게 당신을 주시한다. 편리하지만 위험한 길이다.
+포탈에 도달해서야 장신구의 한계가 드러날 수 있다. 전진하겠는가?`,
+    choices:[
+      { text:'바로 포탈로 향한다', id:'go_to_portal' },
+      { text:'잠시 더 호감 쌓기', id:'help_banana', effect:(s)=>{ s.repute += 1; } }
+    ]
+  },
+
+  /* --------------- 위장 루트 --------------- */
   disguise_shell: {
     title:'껍질 위장',
-    text:`당신은 버려진 껍질을 주워 머리에 덮어쓴다. 처음에는 어색하다. 걸음걸이와 말투를 흉내내느라 땀이 난다.
-위장 덕분에 시장과 광장에 쉽게 접근할 수 있다. 사람들 사이에서 정보를 엿보고, 바나나들의 비밀스런 유머를 배운다.
-하지만 위장은 언제나 완벽하지 않다. 어느 순간 누군가 당신의 미세한 차이를 알아차릴 수 있다.
-당신은 기발함으로 호감을 얻는가, 아니면 눈에 띄어 위험에 처하는가 — 선택의 시간이 왔다.`,
+    text:
+`버려진 껍질을 주워 머리에 덮어쓴다. 걸음걸이와 손짓을 흉내내기에 당신의 몸은 어색하다.
+위장 덕분에 시장과 광장에 쉽게 접근할 수 있고, 바나나들의 사적인 대화를 엿볼 기회가 생긴다.
+그러나 위장은 늘 불완전하다. 미세한 차이는 언제든 포착될 수 있다.
+이제 자연스럽게 섞일 것인가, 혹은 과장된 매력으로 눈에 띌 것인가?`,
     choices:[
       { text:'자연스럽게 섞여 정보 수집', id:'stay_natural' },
-      { text:'위장 과장 — 눈에 띄지만 매력적', id:'decorate_shell' }
+      { text:'껍질을 장식해 과감히 주목받기', id:'decorate_shell' }
     ]
   },
 
   stay_natural: {
-    title:'자연스럽게 행동',
-    text:`당신은 최대한 자연스럽게 행동하려 노력한다. 때때로 어눌한 제스처가 나오지만, 작은 진심으로 커버한다.
-몇몇 바나나는 당신의 특이함을 호기심으로 받아들인다. 시장에서 포탈의 위치에 대한 속설을 들을 수 있었다.
-위장 상태로 포탈에 들어가면 위험하지만, 성공하면 신속한 탈출이 가능하다는 정보도 얻는다.
-당신은 안전하거나 신속한 길 중 어떤 것을 택할 것인가?`,
+    title:'자연스러운 흉내',
+    text:
+`당신은 최대한 자연스럽게 행동하려 한다. 어눌한 제스처가 나오지만 진심은 통한다.
+몇몇 바나나는 호기심을 보이며 작은 단서를 흘려준다. 위장의 장점은 정보 접근성이다.
+이 지식을 활용하면 포탈 접근이 쉬워질 수도 있다. 어떻게 활용할 것인가?`,
     choices:[
-      { text:'조심스럽게 포탈 시도 — 하이브리드 가능성', id:'attempt_portal_hybrid', effect:(s)=>{ s.clues += 1; } },
-      { text:'더 많은 호감 쌓기', id:'help_banana', effect:(s)=>{ s.repute += 1; } }
+      { text:'단서로 포탈 시도(하이브리드 가능)', id:'attempt_portal_hybrid', effect:(s)=>{ s.clues += 1; } },
+      { text:'더 호감을 모으기', id:'help_banana', effect:(s)=>{ s.repute += 1; } }
     ]
   },
 
   decorate_shell: {
-    title:'위장 과장하기',
-    text:`껍질에 화려한 장식을 붙이고, 바나나들의 패션을 모방해 과장된 스타일을 연출한다. 모두의 시선이 당신에게 쏠린다.
-이 방식은 빠르게 주목을 받고, 뜻밖의 도움과 단서를 가져오기도 한다. 그러나 동시에 감시 또한 늘어난다.
-당신은 이 순간 화려함으로 기회를 만들 것인가, 아니면 화려함 때문에 포착될 것인가? 결정을 내려라.`,
+    title:'과장된 위장',
+    text:
+`껍질에 화려한 장식을 붙이고 큰 제스처로 관심을 끈다. 사람들의 시선이 집중된다.
+이 정책은 빠른 정보와 예기치 않은 도움을 가져오기도 하지만, 감시 또한 늘어난다.
+당신이 얻는 것은 속도, 잃는 것은 은밀함이다. 큰 보상을 노릴 것인가, 리스크를 줄일 것인가?`,
     choices:[
-      { text:'포탈로 돌진 — 결과는 예측 불가', id:'attempt_portal_hybrid', effect:(s)=>{ s.repute += 1; s.clues += 1; } },
-      { text:'잠시 숨고 더 관찰', id:'observe_more' }
+      { text:'포탈로 돌진 — 성패 불명', id:'attempt_portal_hybrid', effect:(s)=>{ s.repute += 1; s.clues += 1; } },
+      { text:'숨고 더 관찰', id:'observe_more' }
     ]
   },
 
   attempt_portal_hybrid: {
-    title:'포탈 시도 (하이브리드)',
-    text:`여러 조각의 단서와 위장 상태로 북쪽 관문에 접근한다. 빛이 일어나지만 전송은 완전하지 않다.
-당신의 신체 일부가 변한다. 인간의 이성과 바나나의 외형이 섞여, 당신은 두 세계 어디에도 온전히 속하지 못하는 존재가 된다.
-새로운 감각과 유혹이 생기지만, 동시에 정체성의 혼란이 찾아온다. 하이브리드는 자유와 고립을 동시에 준다.
-이 상태로 살아가는 법을 배우며, 당신은 새로운 종류의 삶을 시작한다.`,
+    title:'포탈 시도(하이브리드)',
+    text:
+`준비는 일부였고, 포탈은 당신을 반쯤만 받아들였다. 빛이 일렁이고 몸의 일부가 변한다.
+인간의 이성과 바나나의 외형이 섞여, 새로운 감각과 혼란이 찾아온다.
+이 결과는 자유와 소외를 동시에 준다 — 두 세계에 완전히 속하지 못하는 존재가 된다.
+이제, 이 상태로 살아갈 것인가 아니면 다시 도전할 것인가?`,
     choices:[
+      { text:'새로운 삶을 받아들인다(하이브리드 엔딩)', id:'ending_hybrid' },
       { text:'다시 시작', id:'intro_wake' }
     ],
     effect:(s)=>{ s.flags.hybridEnding = true; }
   },
 
-  // 정면 대면 루트
+  /* --------------- 정면 대면 루트 --------------- */
   ask_police: {
-    title:'직접 질문',
-    text:`당신은 대담하게 바나나 경찰에게 다가가 이곳이 어디인지 묻는다. 경찰은 당신을 호기심 어린 눈으로 바라본다.
-그들은 당신의 정체를 테스트하려고 한다. 연구소로 이송될 가능성이 있다 — 이건 위험이거나 기회가 될 수 있다.
-직접 대면은 빠르게 이야기를 진전시키지만, 통제되지 않는 실험과 변형의 위험성을 동반한다.
-당신은 솔직하게 답할 것인가, 아니면 속임수를 택할 것인가?`,
+    title:'직접 묻기',
+    text:
+`당신은 바나나 경찰에게 다가가 이 세계의 성질을 묻는다. 경찰은 호기심과 경계를 동시에 보인다.
+검사와 질문이 이어지고, 당신은 연구소로 이송될 위험과 기회를 동시에 마주한다.
+직접 대면은 빠른 이동을 제공하지만 통제된 실험의 대상이 될 수 있다.
+당신은 솔직히 협력할 것인가, 속임수로 시간을 벌 것인가?`,
     choices:[
-      { text:'솔직히 고백', id:'confess_human' },
+      { text:'정직하게 고백', id:'confess_human' },
       { text:'거짓말로 시간 벌기', id:'lie_allergy' }
     ]
   },
 
   confess_human: {
-    title:'정직한 고백',
-    text:`"저는 사람입니다." 라고 고백한다. 바나나들은 잠시 토론을 벌이고, 결국 당신을 연구 대상으로 삼기로 결정한다.
-과학자는 포탈의 작동 원리를 연구하고 있으며, 외부인을 시험해 볼 기회를 원한다. 협력하면 돌아갈 수 있다고 제안한다.
-이 제안은 위험하지만, 성공하면 귀환을 보장받을 수 있는 유일한 방법일지도 모른다. 동의할 것인가?`,
+    title:'정직한 제안',
+    text:
+`"저는 사람입니다." 당신은 숨김없이 고백한다. 토론 끝에 과학자는 실험과 협력을 제안한다.
+성공하면 귀환을 돕겠다는 약속이 있다. 하지만 실패하면 변형의 위험이 따른다.
+당신은 위험을 감수하여 귀환을 택하겠는가? 아니면 도망을 선택하겠는가?`,
     choices:[
-      { text:'실험에 자발적으로 참여', id:'meet_scientist', effect:(s)=>{ s.repute += 1; s.clues += 1; } },
-      { text:'거부하고 도주 시도', id:'escape_lab' }
+      { text:'자발적으로 실험에 참여', id:'meet_scientist', effect:(s)=>{ s.repute += 1; s.clues += 1; } },
+      { text:'거부하고 탈출 시도', id:'escape_lab' }
     ]
   },
 
   lie_allergy: {
-    title:'거짓말',
-    text:`"껍질 알레르기입니다." 라며 둘러댄다. 바나나들은 의심하지만 한동안 관찰을 계속하기로 한다.
-거짓말은 시간을 벌지만, 진실이 드러날 경우 더 큰 불신을 사게 된다. 결국 연구소로 이송되어 정밀 검사 대상이 된다.
-당신은 계산된 거짓으로 이득을 얻을지, 아니면 정직으로 운을 시험할지 다시 결정해야 한다.
-다음 선택을 고르라.`,
+    title:'기만의 시간',
+    text:
+`"껍질 알레르기입니다." 라고 둘러댄다. 일시적으로 의심을 피할 수 있지만, 언젠가 진실이 드러날 수 있다.
+연구소로 옮겨져 더 정밀한 검사를 받을 가능성이 높아진다.
+시간을 버는 대신 신뢰를 잃을 위험이 커진다. 이번에는 어떻게 하겠는가?`,
     choices:[
-      { text:'실험 응하기 (거짓의 연장)', id:'meet_scientist', effect:(s)=>{ s.clues += 1; } },
-      { text:'교묘히 탈출 시도', id:'escape_lab' }
+      { text:'실험을 허용하여 연장된 기회 얻기', id:'meet_scientist', effect:(s)=>{ s.clues += 1; } },
+      { text:'기습 탈출 시도', id:'escape_lab' }
     ]
   },
 
   meet_scientist: {
-    title:'과학자와의 만남',
-    text:`과학자는 온화하면서도 계산적인 태도를 보인다. 그는 포탈 실험을 제안하고, 성공하면 귀환을 돕겠다고 말한다.
-실험은 안전 보장이 없으며, 일부 피실험자는 변형되어 바나나로 완전히 동화되었다는 기록이 있다.
-당신은 실험을 받아들여 귀환을 시도할 것인가, 아니면 리스크를 피해 다른 길을 모색할 것인가?`,
+    title:'과학자와의 협력',
+    text:
+`과학자는 친절하지만 목적이 분명하다. 포탈의 작동 원리를 밝힐 수 있다면 귀환을 돕겠다는 제안이다.
+실험은 성공 가능성과 실패 위험을 모두 내포한다. 일부 피실험자는 변형되었다는 전례가 있다.
+결정은 당신의 준비와 용기에 달려있다. 참여하겠는가?`,
     choices:[
-      { text:'실험 참여 — 가능한 귀환 경로', id:'experiment' },
-      { text:'실험 거부 — 탈출 모색', id:'escape_lab' }
+      { text:'실험 수락 — 안정화 시 귀환 가능', id:'experiment' },
+      { text:'거부하고 탈출 시도', id:'escape_lab' }
     ],
     effect:(s)=>{ s.repute += 1; }
   },
 
   experiment: {
     title:'실험 시작',
-    text:`실험은 신비로운 기계와 빛으로 가득하다. 데이터가 쏟아지고, 의식적으로 모든 감각이 증폭된다.
-빛 속에서 당신은 선택의 순간을 본다: 인간으로 돌아갈 수 있는 가능성과 바나나로 남아 새로운 공동체를 얻는 가능성.
-기계가 폭주하거나 안정적으로 작동할 수 있다. 결과는 당신의 준비와 단서, 그리고 호감치에 영향을 받는다.
-준비되었는가?`,
+    text:
+`기계가 감싸고, 빛이 맥동한다. 데이터가 뿜어나오고 감각은 극도로 예민해진다.
+눈앞에는 두 갈래의 이미지가 번갈아 보인다: 인간 세계로 돌아가는 문과 이완된 바나나 사회.
+기계는 입력(단서·신뢰)에 민감하다. 이제 전송을 시도한다.`,
     choices:[
       { text:'전송 시도', id:'experiment_result' }
     ]
@@ -337,88 +397,161 @@ const story = {
 
   experiment_result: {
     title:'실험 결과',
-    text:`빛이 꺼진 뒤, 당신은 이전과는 다른 존재로 서 있다. 결과는 입력된 조건에 따라 달라진다.
-- 충분한 단서와 신뢰를 갖춘 경우: 포탈이 안정화되어 인간 세계로 귀환할 수 있다. (안전 귀환)
-- 부족하거나 위장 상태로 진입한 경우: 부분 변형이 일어나 하이브리드 상태가 된다.
-- 실험 실패 시: 완전 변형되어 바나나 사회에 동화된다.
-결과가 나오고, 당신은 새로운 운명을 맞는다.`,
+    text:
+`빛이 잦아들고, 몸은 전과 다를 수 있다. 결과는 당신이 준비한 정도에 따라 달라진다.
+- 충분한 단서(2+)와 신뢰(3+)가 충족되면: 장비는 안정화되어 인간 세계로 귀환이 가능하다.
+- 중간 수준의 준비가 있으면: 부분 변형으로 하이브리드 상태가 된다.
+- 준비가 부족하면: 완전 동화되어 이곳의 일원이 된다.
+결과는 운명이다. 당신의 결정을 확인하라.`,
     choices:[
-      { text:'다시 시작', id:'intro_wake' }
+      { text:'결과 확인', id:'finalize' }
     ],
     effect:(s)=>{
-      // 조건 기반 엔딩 플래그
-      if((s.repute>=3 && s.clues>=2) || s.flags.honestRitual) s.flags.safeEnding = true;
-      else if(s.flags.hybridEnding || (s.repute>=1 && s.clues>=1 && Math.random()>0.4)) s.flags.hybridEnding = true;
+      if ((s.repute >= 3 && s.clues >= 2) || s.flags.honestRitual) s.flags.safeEnding = true;
+      else if (s.flags.hybridEnding || (s.repute >= 1 && s.clues >= 1 && Math.random() > 0.45)) s.flags.hybridEnding = true;
       else s.flags.bananaEnding = true;
     }
   },
 
   escape_lab: {
     title:'연구소 탈출 시도',
-    text:`당신은 연구소 창틀이나 환기구를 이용해 탈출을 시도한다. 성공하면 자유지만, 실패하면 큰 대가를 치를 수 있다.
-긴 도주극 끝에 당신은 도시 외곽의 허허벌판으로 도망친다. 하지만 포탈에 대한 결정적 단서를 잃었을 수도 있다.
-탈출은 자유를 주었지만 귀환을 더 어렵게 만들었다. 이제 당신의 여정은 어떻게 끝날까?`,
+    text:
+`당신은 창틀과 통로를 이용해 탈출을 시도한다. 긴박한 추격극 끝에 외곽으로 도망친다.
+자유를 얻었지만 귀환에 중요한 단서를 잃었을 가능성이 크다.
+이제 선택지는 은둔해 다시 계획을 세울 것인지, 포탈을 향해 무모하게 돌진할 것인지다.
+당신의 다음 행동은 무엇인가?`,
     choices:[
-      { text:'숨어서 다시 계획 세우기', id:'hide_blend' },
+      { text:'숨어 계획을 재정비', id:'hide_blend' },
       { text:'직접 북쪽 관문으로 급행', id:'go_to_portal' }
     ]
   },
 
-  // 포탈 공통
+  /* --------------- 포탈 공통 --------------- */
   go_to_portal: {
     title:'포탈 접근',
-    text:`북쪽 관문은 거대하고 황금빛이다. 관문 앞에는 심사대와 의식 장소가 있다. 접근하려면 표식, 단서, 또는 권한이 필요하다.
-당신의 준비 상태에 따라 관문의 반응이 달라진다. 주변 바나나들의 시선이 당신을 평가한다.
-마지막으로 자신을 점검하고 문 앞에 다가서자. 이 순간, 당신이 쌓아온 모든 선택이 결말을 만든다.
-문을 통과할 것인가?`,
+    text:
+`북쪽 관문은 거대하고 금빛의 문장으로 장식되어 있다. 심사대와 의식 장소가 주변을 둘러싼다.
+당신의 준비(단서·표식·신뢰)에 따라 관문은 반응하거나 경고를 내린다.
+이 순간, 지난 선택들이 모두 모여 결말을 결정한다. 마지막 결정을 내리라.`,
     choices:[
       { text:'관문 의식에 응하고 통과 시도', id:'portal_attempt' },
-      { text:'주변을 더 살피고 단서 활용', id:'use_clues' }
+      { text:'주변을 더 살펴 단서를 활용', id:'use_clues' }
     ]
   },
 
   use_clues: {
     title:'단서 활용',
-    text:`당신은 모은 단서와 표식을 꺼내어 심사대에 제출한다. 심사관이 그것을 살핀다.
-만약 충분하다면 관문은 흔들리며 통로를 열 것이다. 충분치 않다면, 경고와 함께 제지를 받을 것이다.
-결국 준비가 결정적이다. 당신은 통과권을 얻는가, 아니면 다른 운명을 맞이하는가?`,
+    text:
+`당신은 모은 단서와 표식을 꺼내 심사대에 제출한다. 심사관은 꼼꼼히 살핀다.
+충분하면 관문은 흔들리며 통로를 연다. 불충분하면 제지가 따른다.
+마지막 순간의 진심이 영향을 줄 수 있다 — 선택은 중요한 순간이다.`,
     choices:[
-      { text:'단서 제출', id:'portal_attempt', effect:(s)=>{ s.clues += 0; } },
-      { text:'마지막으로 진심을 보이며 도전', id:'ritual' }
+      { text:'단서 제출', id:'portal_attempt', effect:(s)=>{ /* noop */ } },
+      { text:'진심을 보이며 도전(의식 재시도)', id:'ritual' }
     ]
   },
 
   portal_attempt: {
     title:'문 통과 시도',
-    text:`관문이 당신을 받아들이거나, 거부한다. 결과는 축적된 신뢰와 단서의 조합에 달렸다.
-- 충분한 신뢰(3+)와 단서(2+)를 갖춘 경우: 관문은 부드럽게 열리고 인간 세계로의 귀환이 가능하다.
-- 중간 정도의 준비: 일부분 변형되어 하이브리드 상태로 전송된다.
-- 거의 준비되지 않은 경우: 완전 변형되어 바나나 사회의 일원이 된다.
-문을 통과한 뒤, 새로운 미래가 당신을 맞는다.`,
+    text:
+`관문이 당신을 받아들이거나 거부한다. 결과는 이전의 축적된 수치와 플래그에 달려있다.
+- 충분한 신뢰(3+)와 단서(2+)면: 부드럽게 열려 인간 세계로 귀환 가능.
+- 중간이면: 부분 변형되어 하이브리드 상태가 된다.
+- 거의 준비되지 않으면: 완전 동화되어 바나나 사회의 일부가 된다.
+당신의 결말을 맞이하라.`,
     choices:[
       { text:'결과 보기', id:'finalize' }
     ],
     effect:(s)=>{
-      if(s.repute>=3 && s.clues>=2) s.flags.safeEnding = true;
-      else if(s.repute>=1 && s.clues>=1) s.flags.hybridEnding = true;
+      if (s.repute >= 3 && s.clues >= 2) s.flags.safeEnding = true;
+      else if (s.repute >= 1 && s.clues >= 1) s.flags.hybridEnding = true;
       else s.flags.bananaEnding = true;
     }
   },
 
   finalize: {
     title:'결말',
-    text:`빛이 당신을 감싼다. 운명의 결과가 드러난다. 당신이 선택한 길과 쌓은 흔적이 이 순간에 모인다.
-- 안전 귀환: 당신은 인간 세계로 돌아간다. 바나나 월드의 기억은 당신의 가치관을 바꿔 놓는다.
-- 하이브리드: 두 세계의 흔적을 가진 존재로 남아, 독특한 삶을 꾸려나간다.
-- 바나나화: 완전히 동화되어 새로운 사회의 일부가 된다. 때로는 편안함을, 때로는 상실을 느낀다.
-어떤 결말이냐에 따라 당신의 이야기는 새로 쓰인다.`,
+    text:
+`빛이 널 감싼다. 지금까지의 모든 선택과 쌓인 흔적이 한 줄기로 합쳐진다.
+당신의 운명은 이제 확정된다. 어떤 결말이 펼쳐질까?`,
+    choices:[
+      { text:'결말 보기', id:'show_ending' }
+    ]
+  },
+
+  show_ending: {
+    title:'엔딩 전개',
+    text:
+`결과는 당신이 쌓아온 것들에 따라 다르다. 잠시 숨을 고르고 결과를 받아들여라.
+(다음 단계에서 당신의 엔딩과 에필로그가 펼쳐진다.)`,
+    choices:[
+      { text:'엔딩 확인', id:'ending_router' }
+    ]
+  },
+
+  /* --------------- 엔딩 결정 라우터(내부용) --------------- */
+  ending_router: {
+    title:'엔딩 라우팅',
+    text:
+`운명이 결정됩니다...`,
+    choices:[
+      // 비어있음. 선택 처리 로직에서 분기 후 실제 엔딩 노드로 이동합니다.
+    ]
+  },
+
+  /* --------------- 실제 엔딩 노드 --------------- */
+  ending_safe: {
+    title:'안전 귀환',
+    text:
+`빛이 잦아들자, 당신은 다시 인간 세계의 공기 속에 서 있다. 집의 냄새, 차 소리, 익숙한 불빛.
+바나나 월드에서의 기억은 오히려 삶의 새로운 눈금이 된다 — 연민과 관찰의 힘.
+당신은 돌아왔지만 달라진 사람이다. 그곳에서의 약속, 흉패, 그리고 만났던 얼굴들을 가끔 떠올린다.
+에필로그: 당신은 이후 그 경험을 책으로 남기거나, 연구로 발전시켜 다른 이들을 도운다.`,
+    choices:[
+      { text:'다시 시작', id:'intro_wake' }
+    ]
+  },
+
+  ending_hybrid: {
+    title:'하이브리드 — 두 세계 사이',
+    text:
+`당신은 두 세계의 흔적을 가진 존재로 남았다. 때로 인간의 이성이, 때로 바나나의 감각이 우선한다.
+당신의 삶은 독특한 서사를 가진다 — 양쪽 모두의 일부로서 소속감을 찾으려 애쓴다.
+새로운 능력과 새로운 고독이 공존한다. 사람들은 당신을 호기심과 경외로 바라본다.
+에필로그: 당신은 경계에 선 안내자처럼 두 세계를 오가며 길을 안내하거나, 스스로 새로운 공동체를 쌓는다.`,
+    choices:[
+      { text:'다시 시작', id:'intro_wake' }
+    ]
+  },
+
+  ending_banana: {
+    title:'완전 동화(바나나화)',
+    text:
+`빛이 당신을 완전히 데려갔고, 당신은 바나나 사회의 일원이 되었다.
+초반의 낯섦은 점차 편안함으로 바뀌었다. 새로운 관습, 새로운 친구들, 새로운 소속.
+하지만 인간 세계의 일부 기억은 가끔 가슴 깊이 남아 아련한 그리움으로 다가온다.
+에필로그: 당신은 새로운 가치를 받아들이고, 때로는 잃어버린 것들에 대해 노래한다.`,
+    choices:[
+      { text:'다시 시작', id:'intro_wake' }
+    ]
+  },
+
+  ending_heroic: {
+    title:'영웅적 희생(특별 엔딩)',
+    text:
+`어떤 선택은 단순한 귀환을 넘어 다른 이를 살리는 길을 택하게 한다.
+당신은 포탈을 안정시키기 위해 자신을 희생했고, 그 덕에 다수의 바나나들이 안전을 얻었다.
+당신의 이름은 그곳에서 전설처럼 남고, 인간 세계에서는 잔잔한 영향으로 남는다.
+에필로그: 당신의 행적은 노래와 이야기로 이어지며, 세계 양쪽에 작은 평화를 남긴다.`,
     choices:[
       { text:'다시 시작', id:'intro_wake' }
     ]
   }
 };
 
-// --- 렌더링 ---
+/* --------------------------
+   렌더링 및 선택 처리
+   -------------------------- */
 const storyEl = document.getElementById('story');
 const choicesEl = document.getElementById('choices');
 const memeEl = document.getElementById('meme');
@@ -432,48 +565,135 @@ const statIdentity = document.getElementById('statIdentity');
 function renderHUD(){
   state.timePlayed = Math.floor((Date.now() - state.timeStart)/1000);
   timePlayedEl.textContent = `플레이: ${state.timePlayed}s`;
-  progressText.textContent = `진행: ${Math.min(100, Math.floor(((new Set(state.history.concat([state.current]))).size / Object.keys(story).length)*100))}%`;
-  statRepute.textContent = `바나나 호감: ${state.repute||0}`;
-  statClues.textContent = `단서: ${state.clues||0}`;
+  const visited = new Set(state.history.concat([state.current]));
+  progressText.textContent = `진행: ${Math.min(100, Math.floor((visited.size / Object.keys(story).length)*100))}%`;
+  statRepute.textContent = `바나나 호감: ${state.repute || 0}`;
+  statClues.textContent = `단서: ${state.clues || 0}`;
 }
 
 function render(){
-  if(!state.current) state.current = 'intro_wake';
+  if (!state.current) state.current = 'intro_wake';
+  // 엔딩 라우팅 처리: ending_router 일 때 플래그 기반으로 실제 엔딩으로 이동
+  if (state.current === 'ending_router') {
+    if (state.flags.heroic) state.current = 'ending_heroic';
+    else if (state.flags.safeEnding) state.current = 'ending_safe';
+    else if (state.flags.hybridEnding) state.current = 'ending_hybrid';
+    else if (state.flags.bananaEnding) state.current = 'ending_banana';
+    else {
+      // 기본 fallback: 랜덤으로 하이브리드 또는 바나나 엔딩
+      state.current = (Math.random() > 0.4) ? 'ending_hybrid' : 'ending_banana';
+    }
+  }
+
   const node = story[state.current];
   renderHUD();
-  if(!node){ storyEl.textContent = '오류: 해당 씬이 존재하지 않습니다.'; choicesEl.innerHTML = '<div class="choice small">게임 오류. 처음으로 돌아갑니다.</div>'; return; }
+
+  if (!node) {
+    storyEl.textContent = '오류: 해당 씬이 존재하지 않습니다.';
+    choicesEl.innerHTML = '<div class="choice small">게임 오류. 처음으로 돌아갑니다.</div>';
+    return;
+  }
+
+  // 텍스트 전환 애니메이션
   storyEl.style.opacity = 0;
-  setTimeout(()=>{ storyEl.textContent = node.text; storyEl.style.opacity = 1; },140);
-  if(Math.random()<0.15){ memeEl.src = rand(memes); memeEl.style.display='block'; } else memeEl.style.display='none';
+  setTimeout(()=>{
+    storyEl.textContent = node.text;
+    storyEl.style.opacity = 1;
+  }, 140);
+
+  // 가끔 이미지 연출
+  if (Math.random() < 0.12) {
+    memeEl.src = rand(memes);
+    memeEl.style.display = 'block';
+  } else {
+    memeEl.style.display = 'none';
+  }
+
+  // 선택 생성
   choicesEl.innerHTML = '';
-  node.choices.forEach(c=>{
-    const btn = document.createElement('button'); btn.className = 'choice'; btn.innerText = c.text; btn.onclick = ()=> choose(c); choicesEl.appendChild(btn);
-  });
+  if (node.choices && node.choices.length) {
+    node.choices.forEach(c=>{
+      const btn = document.createElement('button');
+      btn.className = 'choice';
+      btn.innerText = c.text;
+      btn.onclick = ()=> choose(c);
+      choicesEl.appendChild(btn);
+    });
+  } else {
+    // 안전장치: 노드에 선택이 없으면 다시 시작 버튼 생성
+    const b = document.createElement('button');
+    b.className = 'choice small';
+    b.innerText = '다시 시작';
+    b.onclick = ()=> { state.current = 'intro_wake'; render(); };
+    choicesEl.appendChild(b);
+  }
 }
 
-function choose(choice){ if(choice.effect && typeof choice.effect === 'function'){ try{ choice.effect(state); }catch(e){ console.error(e); } }
-  state.history.push(state.current); state.current = choice.id; render(); appendLog(`선택: ${choice.text}`);
+/* 선택 처리: effect 실행, 기록, 현재 노드 변경 등 */
+function choose(choice){
+  if (choice.effect && typeof choice.effect === 'function') {
+    try { choice.effect(state); }
+    catch(e){ console.error(e); }
+  }
+
+  // 특수: portal_attempt / experiment_result 등 일부 노드는 내부에서 flags를 설정한다.
+  state.history.push(state.current);
+  state.current = choice.id;
+
+  // 일부 노드에서 'finalize' -> 'ending_router'로 강제 이동 처리
+  if (state.current === 'finalize') {
+    // finalize의 effect가 이미 flags를 설정했을 수 있다.
+    // 안전 검증: if heroic 조건 (예: 높은 repute & clues) 부여
+    if (state.repute >= 5 && state.clues >= 3) state.flags.heroic = true;
+    // 다음 노드로 라우팅
+    state.current = 'ending_router';
+  }
+
+  // 만약 선택 후 곧바로 엔딩 플래그가 셋팅되었다면 라우팅을 'ending_router'로 바꿀 수 있다.
+  if (state.current === 'finalize' || state.current === 'show_ending') {
+    // handled above in render loop
+  }
+
+  appendLog(`선택: ${choice.text}`);
+  render();
 }
 
-// 버튼 바인딩
-document.getElementById('restartBtn').onclick = ()=>{ if(confirm('정말로 처음부터 시작하시겠습니까?')){ state.current='intro_wake'; state.flags={}; state.repute=0; state.clues=0; state.history=[]; state.timeStart=Date.now(); render(); appendLog('게임 재시작'); } };
+/* 버튼 바인딩 */
+document.getElementById('restartBtn').onclick = ()=>{
+  if (confirm('정말로 처음부터 시작하시겠습니까?')) {
+    state.current = 'intro_wake';
+    state.flags = {};
+    state.repute = 0;
+    state.clues = 0;
+    state.history = [];
+    state.timeStart = Date.now();
+    render();
+    appendLog('게임 재시작');
+  }
+};
 
 document.getElementById('hintBtn').onclick = ()=>{
-  const cur = story[state.current]; let hint = '상황을 천천히 살피세요.';
-  if(cur && cur.title && cur.title.includes('관찰')) hint = '호감을 쌓고 단서를 모아 북쪽 관문을 노리세요.';
-  if(cur && cur.title && cur.title.includes('위장')) hint = '위장은 빠르지만 위험합니다. 단서를 확보하세요.';
-  if(cur && cur.title && cur.title.includes('직접')|| (cur && cur.title && cur.title.includes('과학'))) hint = '직접 대면은 빠르지만 변형의 위험을 동반합니다.';
+  const cur = story[state.current];
+  let hint = '상황을 천천히 살피세요.';
+  if (cur && cur.title && cur.title.includes('관찰')) hint = '호감을 쌓고 단서를 모아 북쪽 관문을 노리세요.';
+  if (cur && cur.title && cur.title.includes('위장')) hint = '위장은 빠르지만 감시가 늘어납니다. 단서를 확보하세요.';
+  if (cur && cur.title && (cur.title.includes('직접') || cur.title.includes('과학'))) hint = '직접 대면은 빠르지만 변형의 위험이 있습니다.';
   alert('힌트: ' + hint);
 };
 
-// export HTML 기능 (단순 다운로드)
+/* export HTML 기능 (단순 다운로드) */
 document.getElementById('exportBtn').onclick = ()=>{
   const blob = new Blob([document.documentElement.outerHTML], {type:'text/html'});
-  const url = URL.createObjectURL(blob); const a = document.createElement('a'); a.href = url; a.download = 'banana_world_complete.html'; a.click(); URL.revokeObjectURL(url);
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'banana_world_expanded.html';
+  a.click();
+  URL.revokeObjectURL(url);
 };
 
-// 초기 시작
-render(); appendLog('새 게임을 시작합니다.'); setInterval(renderHUD,1000);
+/* 초기 시작 */
+render(); appendLog('새 게임을 시작합니다.'); setInterval(renderHUD, 1000);
 
 </script>
 </body>
